@@ -5,16 +5,12 @@ import vobject
 import base64
 import codecs
 
-logo = 'purple.jpg'
-f = open('purple.jpg', 'rb')
-image = f.read()
-f.close()
-
 print "Welcome to the vCard generator! All I need is some basic info and I'll\
-        generate a vCard for you."
+ generate a vCard for you."
 phone_number = raw_input("Phone number: ")
 name = raw_input("Name: ")
 email = raw_input("Email address: ")
+image = None
 
 image_boolean = raw_input("Do you have a JPG you would like to put in the card? (Yes or No): ")
 if image_boolean.lower() == 'yes':
@@ -69,16 +65,16 @@ c.tel.value = phone_number
 
 # The photo is a little iffy I need to play around with this more.
 # Seems to cause issues on some phones.
-
-c.add('photo')
-c.photo.encoding_param = 'b'
-c.photo.type_param = 'JPEG'
-c.photo.value = image
+if image is not None:
+    c.add('photo')
+    c.photo.encoding_param = 'b'
+    c.photo.type_param = 'JPEG'
+    c.photo.value = image
 output = c.serialize()
 
 print c
 
-with open(name, 'wt') as out:
+with open(file_name, 'wt') as out:
    out.write(output)
    out.close()
 
